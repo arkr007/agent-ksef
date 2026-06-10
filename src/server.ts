@@ -1,5 +1,6 @@
 import Fastify from "fastify";
 import { aiRoutes } from "./routes/ai.routes";
+import { healthResponseSchema } from "./schemas/health.schema";
 
 export function buildServer() {
   const app = Fastify({
@@ -7,10 +8,12 @@ export function buildServer() {
   });
 
   app.get("/", async () => {
-    return {
+    const response = {
       status: "ok",
       name: "agent-ksef",
     };
+
+    return healthResponseSchema.parse(response);
   });
 
   app.register(aiRoutes);
